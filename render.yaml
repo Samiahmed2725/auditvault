@@ -1,7 +1,5 @@
 services:
   - type: web
     name: auditvault
-    env: java
-    buildCommand: ./mvnw clean package
-    startCommand: java -jar target/AuditVault-1.0-SNAPSHOT.jar
+    env: docker
     autoDeploy: true
