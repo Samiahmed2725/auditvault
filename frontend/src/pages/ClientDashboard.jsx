@@ -79,7 +79,7 @@ export default function ClientDashboard() {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(doc.uploadedAt).toLocaleDateString()}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <button
-                                        onClick={() => downloadDocument(doc.id, 'document')}
+                                        onClick={() => downloadDocument(doc.id, doc.filePath)}
                                         className="text-blue-600 hover:text-blue-900 flex items-center justify-end w-full"
                                     >
                                         <Download className="h-4 w-4 mr-1" /> Download

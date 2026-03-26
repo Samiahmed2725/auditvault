@@ -164,7 +164,7 @@ export default function ClientView() {
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div className="flex justify-end space-x-3">
                                                 <button
-                                                    onClick={() => downloadDocument(doc.id, 'document')}
+                                                    onClick={() => downloadDocument(doc.id, doc.filePath)}
                                                     className="text-blue-600 hover:text-blue-900 flex items-center"
                                                 >
                                                     <Download className="h-4 w-4 mr-1" /> Download
