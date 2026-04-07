@@ -37,7 +37,14 @@ public class AuditLog {
     }
 
     public enum Action {
-        LOGIN, UPLOAD, DOWNLOAD, DELETE
+        LOGIN,
+        PASSWORD_RESET_REQUEST,
+        PASSWORD_RESET_SUCCESS,
+        CHANGE_PASSWORD,
+        UPLOAD,
+        DOWNLOAD,
+        DELETE_CLIENT,
+        DELETE_DOCUMENT
     }
 
     // Getters

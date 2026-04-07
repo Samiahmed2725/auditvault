@@ -47,14 +47,18 @@ public class DocumentController {
     }
 
     @GetMapping("/list/{clientId}")
-    public List<Document> listDocuments(@PathVariable Long clientId) {
+    public List<Document> listDocuments(
+            @PathVariable Long clientId,
+            @RequestParam(required = false) String financialYear,
+            @RequestParam(required = false) com.auditvault.model.DocumentType docType
+    ) {
         User requestingUser = getAuthenticatedUser();
         System.out.println("📂 API: List Documents | Requestor: " + requestingUser.getEmail() + " (ID: " + requestingUser.getId() + ") | Target Client ID: " + clientId);
 
         User client = userRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         
-        List<Document> docs = documentService.getDocumentsByClient(client, requestingUser);
+        List<Document> docs = documentService.getDocumentsByClient(client, requestingUser, financialYear, docType);
         System.out.println("✅ Found " + docs.size() + " documents for Client ID " + clientId);
         return docs;
     }
@@ -85,8 +89,8 @@ public class DocumentController {
 
     private User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        return userRepository.findByEmail(email)
+        String userId = auth.getName();
+        return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

@@ -1,5 +1,7 @@
 package com.auditvault.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,11 +13,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String userId;
+
     private String name;
 
     @Column(unique = true)
     private String email;
 
+    @JsonIgnore
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -28,6 +34,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "auditor_id")
+    @JsonIgnore
     private User auditor;
 
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -40,6 +47,11 @@ public class User {
         return id;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    @JsonIgnore
     public String getPassword() {
         return passwordHash;
     }
@@ -53,7 +65,7 @@ public class User {
     }
 
     public enum Role {
-        CA, CLIENT
+        AUDITOR, CLIENT
     }
 
     public enum Status {
@@ -64,10 +76,15 @@ public class User {
         this.id = id;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
+    @JsonProperty("password")
     public void setPassword(String passwordHash) {
         this.passwordHash = passwordHash;
     }

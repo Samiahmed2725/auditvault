@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, Link } from 'react-router-dom';
 import { LogOut, LayoutDashboard } from 'lucide-react';
 
 export default function Layout() {
@@ -22,14 +22,17 @@ export default function Layout() {
                             </div>
 
                             {/* Auditor Navigation */}
-                            {user.role === 'ROLE_CA' && (
+                            {user.role === 'ROLE_AUDITOR' && (
                                 <div className="hidden md:flex space-x-4">
-                                    <a href="/dashboard" className="text-gray-900 hover:text-blue-600 font-medium">Clients</a>
-                                    <a href="/audit-logs" className="text-gray-500 hover:text-blue-600 font-medium">Audit Logs</a>
+                                    <Link to="/dashboard" className="text-gray-900 hover:text-blue-600 font-medium">Clients</Link>
+                                    <Link to="/audit-logs" className="text-gray-500 hover:text-blue-600 font-medium">Audit Logs</Link>
                                 </div>
                             )}
                         </div>
                         <div className="flex items-center space-x-4">
+                            <Link to="/change-password" className="text-sm font-medium text-gray-700 hover:text-blue-600">
+                                Change Password
+                            </Link>
                             <span className="text-sm text-gray-500">Welcome, {user.name || 'User'}</span>
                             <button
                                 onClick={handleLogout}

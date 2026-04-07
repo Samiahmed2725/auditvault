@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import ClientView from './pages/ClientView';
 import ClientDashboard from './pages/ClientDashboard';
 import AuditLogs from './pages/AuditLogs';
+import ChangePassword from './pages/ChangePassword';
 
 const ProtectedRoute = () => {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -22,6 +23,7 @@ function App() {
           <Route path="/audit-logs" element={<AuditLogs />} />
           <Route path="/client/:id" element={<ClientView />} />
           <Route path="/my-documents" element={<ClientDashboard />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Routes>

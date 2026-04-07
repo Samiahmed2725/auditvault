@@ -10,17 +10,20 @@ public class CustomUserDetails implements UserDetails {
     private Long id;
     private String name;
     private String email;
+    private String userId;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(Long id,
                              String name,
                              String email,
+                             String userId,
                              String password,
                              Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.userId = userId;
         this.password = password;
         this.authorities = authorities;
     }
@@ -37,6 +40,10 @@ public class CustomUserDetails implements UserDetails {
         return email;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     // ===== UserDetails methods =====
 
     @Override
@@ -51,7 +58,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return userId;
     }
 
     @Override

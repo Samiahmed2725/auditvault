@@ -1,6 +1,7 @@
 package com.auditvault.controller;
 
 import com.auditvault.model.User;
+import com.auditvault.dto.UpdateClientEmailRequest;
 import com.auditvault.service.ClientService;
 import com.auditvault.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -33,10 +34,22 @@ public class ClientController {
         return clientService.getClientsByAuditor(auditor);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteClient(@PathVariable Long id) {
+        User auditor = getAuthenticatedUser();
+        clientService.deleteClient(id, auditor);
+    }
+
+    @PatchMapping("/{id}/email")
+    public User updateClientEmail(@PathVariable Long id, @RequestBody UpdateClientEmailRequest request) {
+        User auditor = getAuthenticatedUser();
+        return clientService.updateClientEmail(id, request.getEmail(), auditor);
+    }
+
     private User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        return userRepository.findByEmail(email)
+        String userId = auth.getName();
+        return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

@@ -2,11 +2,11 @@ package com.auditvault.dto;
 
 public class LoginRequest {
 
-    private String email;
+    private String userId;
     private String password;
 
-    public String getEmail() {
-        return email;
+    public String getUserId() {
+        return userId;
     }
 
     public String getPassword() {

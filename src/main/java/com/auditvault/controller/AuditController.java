@@ -29,7 +29,7 @@ public class AuditController {
         User user = getAuthenticatedUser();
         
         // Strictly Enforce Access: Only Auditors can see logs
-        if (user.getRole() != User.Role.CA) {
+        if (user.getRole() != User.Role.AUDITOR) {
             throw new org.springframework.security.access.AccessDeniedException("Access Denied: Clients cannot view audit logs.");
         }
 
@@ -38,8 +38,8 @@ public class AuditController {
 
     private User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        return userRepository.findByEmail(email)
+        String userId = auth.getName();
+        return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

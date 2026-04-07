@@ -26,7 +26,7 @@ public class AuditService {
                     details
             );
             auditLogRepository.save(log);
-            System.out.println("📝 Audit Log Saved: " + user.getEmail() + " performed " + action);
+            System.out.println("📝 Audit Log Saved: userId=" + user.getUserId() + " action=" + action);
         } catch (Exception e) {
             // Requirement: Logging failures must NOT break main business flow
             System.err.println("❌ Failed to save audit log: " + e.getMessage());

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
-import { Lock, Mail } from 'lucide-react';
+import { Lock, User } from 'lucide-react';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
+    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -12,26 +12,22 @@ export default function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/auth/login', { email, password });
+            const response = await api.post('/auth/login', { userId, password });
             const { token, role } = response.data;
 
             localStorage.setItem('token', token);
             localStorage.setItem('role', role);
             localStorage.setItem('user', JSON.stringify(response.data));
 
-            if (role === 'ROLE_CA') {
+            if (role === 'ROLE_AUDITOR') {
                 navigate('/dashboard');
             } else {
                 navigate('/my-documents');
             }
 
         } catch (err) {
-            console.error("Login Error:", err);
-            if (err.response && err.response.status === 401) {
-                setError('Invalid credentials');
-            } else {
-                setError('Login failed. Check server connection or CORS.');
-            }
+            const msg = err?.response?.data?.message;
+            setError(msg || 'Login failed.');
         }
     };
 
@@ -42,13 +38,13 @@ export default function Login() {
                 {error && <div className="mb-4 rounded bg-red-100 p-2 text-red-600">{error}</div>}
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                        <label className="block text-sm font-medium text-gray-700">User ID</label>
                         <div className="relative mt-1">
-                            <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                             <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="text"
+                                value={userId}
+                                onChange={(e) => setUserId(e.target.value)}
                                 className="w-full rounded-md border border-gray-300 py-2 pl-10 pr-3 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                 required
                             />
@@ -74,6 +70,7 @@ export default function Login() {
                         Sign In
                     </button>
                 </form>
+
             </div>
         </div>
     );

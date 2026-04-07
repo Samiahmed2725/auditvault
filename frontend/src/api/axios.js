@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
     // Uses the VITE_API_URL env variable in production (e.g., Netlify), falls back to local dev server
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8081',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8082',
     headers: {
         'Content-Type': 'application/json',
     },

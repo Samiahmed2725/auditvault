@@ -15,13 +15,21 @@ export default function ClientView() {
     const [docType, setDocType] = useState('ITR');
     const [financialYear, setFinancialYear] = useState('2023-2024');
 
+    // Filters
+    const [filterYear, setFilterYear] = useState('');
+    const [filterType, setFilterType] = useState('');
+
     useEffect(() => {
         fetchDocuments();
-    }, [id]);
+    }, [id, filterYear, filterType]);
 
     const fetchDocuments = async () => {
         try {
-            const response = await api.get(`/api/documents/list/${id}`);
+            const params = {};
+            if (filterYear) params.financialYear = filterYear;
+            if (filterType) params.docType = filterType;
+
+            const response = await api.get(`/api/documents/list/${id}`, { params });
             setDocuments(response.data);
         } catch (err) {
             setError('Failed to load documents. Access might be denied.');
@@ -146,6 +154,40 @@ export default function ClientView() {
                 {/* List Section */}
                 <div className="lg:col-span-2">
                     <div className="rounded-lg border bg-white shadow-sm overflow-hidden">
+                        <div className="flex flex-col gap-3 border-b bg-gray-50 p-4 sm:flex-row sm:items-end sm:justify-between">
+                            <div className="flex gap-3">
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-600">Filter Year</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. 2023-2024"
+                                        value={filterYear}
+                                        onChange={(e) => setFilterYear(e.target.value)}
+                                        className="mt-1 w-44 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-600">Filter Type</label>
+                                    <select
+                                        value={filterType}
+                                        onChange={(e) => setFilterType(e.target.value)}
+                                        className="mt-1 w-44 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm"
+                                    >
+                                        <option value="">All</option>
+                                        <option value="ITR">ITR</option>
+                                        <option value="GST">GST</option>
+                                        <option value="BALANCE_SHEET">Balance Sheet</option>
+                                        <option value="OTHER">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => { setFilterYear(''); setFilterType(''); }}
+                                className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                                Clear
+                            </button>
+                        </div>
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
